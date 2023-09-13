@@ -1,4 +1,3 @@
-import { getDateInventor } from "./modules/dateFunction.js";
 import {
   fetchForRegPost,
   fetchForAuthPost,
@@ -7,6 +6,7 @@ import {
 } from "./modules/fetchApiCode.js";
 import { getToken, token } from "./modules/variables.js";
 import { initializator } from "./modules/initialization.js";
+import { format } from "date-fns";
 
 let comments = [];
 let lastCommentId;
@@ -26,7 +26,7 @@ export const getFetchApi = () => {
             token: token,
             id: comment.id,
             author: { name: comment.author.name },
-            date: getDateInventor(comment.date),
+            date: format(new Date(comment.date), "yyyy-MM-dd hh.mm.ss"),
             isLiked: comment.isLiked,
             likes: comment.likes,
             text: comment.text,
@@ -77,7 +77,10 @@ const logining = () => {
             return response.json();
           })
           .catch((error) => {
-            if (String(error) === "Error: Неверное имя пользователя или пароль, попробуйте ещё раз!") {
+            if (
+              String(error) ===
+              "Error: Неверное имя пользователя или пароль, попробуйте ещё раз!"
+            ) {
               alert(error);
             } else {
               console.log(String(error));
@@ -130,11 +133,10 @@ const logining = () => {
             const commitInput = document.getElementById("commit-input");
             nameInput.value = `${userName}`;
             nameInput.style.backgroundColor = `#7cfc98`;
-            commitInput
-              .addEventListener("input", () => {
-                let textCommit = commitInput.value;
-                return textCommit;
-              })
+            commitInput.addEventListener("input", () => {
+              let textCommit = commitInput.value;
+              return textCommit;
+            });
             writeButton.addEventListener("click", () => {
               methodApiPost(commitInput, token)
                 .then((response) => {
@@ -146,7 +148,7 @@ const logining = () => {
                       } else {
                         commitInput.style.backgroundColor = `rgba(255, 186, 186, 0.5)`;
                       }
-                    })
+                    });
                     throw new Error(
                       "В комментарии меньше 3х символов, допишите комментарий, чтобы отправить его..."
                     );
@@ -162,7 +164,10 @@ const logining = () => {
                   commitInput.value = "";
                 })
                 .catch((error) => {
-                  if (String(error) === "Error: В комментарии меньше 3х символов, допишите комментарий, чтобы отправить его...") {
+                  if (
+                    String(error) ===
+                    "Error: В комментарии меньше 3х символов, допишите комментарий, чтобы отправить его..."
+                  ) {
                     alert(error);
                   } else {
                     alert("Кажется нет интернета, проверьте соединение!");
@@ -248,7 +253,6 @@ const logining = () => {
             regButton.disabled = false;
           }
         });
-
 
         regButton.addEventListener("click", () => {
           fetchForRegPost({
