@@ -64,7 +64,7 @@ const logining = () => {
           password: authPassword.value,
         })
           .then((response) => {
-            if (response.status == 400) {
+            if (response.status === 400) {
               throw new Error('Неверное имя пользователя или пароль, попробуйте ещё раз!');
             }
             return response.json();
@@ -130,7 +130,7 @@ const logining = () => {
             writeButton.addEventListener('click', () => {
               methodApiPost(commitInput, token)
                 .then((response) => {
-                  if (response.status == 400) {
+                  if (response.status === 400) {
                     commitInput.style.backgroundColor = `rgba(255, 186, 186, 0.5)`;
                     commitInput.addEventListener('input', () => {
                       if (commitInput.value.length > 2) {
@@ -234,7 +234,7 @@ const logining = () => {
             password: regInputPassword.value,
           })
             .then((response) => {
-              if (response.status == 400) {
+              if (response.status === 400) {
                 throw new Error('Пользователь с таким логином уже существует, выберите другой логин');
               }
               return response.json();
